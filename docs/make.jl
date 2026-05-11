@@ -4,7 +4,7 @@ using MeanFieldToolkit
 makedocs(
     build       =   "build" ,
     sitename    =   "MeanFieldToolkit.jl"    ,
-    modules     =   [MeanFieldToolkit.MFTDecompose, MeanFieldToolkit.MFTBonds, MeanFieldToolkit.TBMFT, MeanFieldToolkit.BDGMFT, MeanFieldToolkit.Build, MeanFieldToolkit.MFTIter, MeanFieldToolkit.MFTRun, MeanFieldToolkit.MFTResume, MeanFieldToolkit.MFTPlot, MeanFieldToolkit.InteractionConvert]   ,
+    modules     =   [MeanFieldToolkit.MFTDecompose, MeanFieldToolkit.MFTBonds, MeanFieldToolkit.TBMFT, MeanFieldToolkit.BdGMFT, MeanFieldToolkit.Build, MeanFieldToolkit.MFTIter, MeanFieldToolkit.MFTRun, MeanFieldToolkit.MFTResume, MeanFieldToolkit.MFTPlot, MeanFieldToolkit.InteractionConvert]   ,
     pages = [
         "Introduction"              =>  "index.md",
         "MFTDecompose"              =>  "MFTDecompose.md",
