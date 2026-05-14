@@ -1,4 +1,4 @@
-using MeanFieldToolkit, TightBindingToolkit, FixedPointToolkit
+using MeanFieldToolbox, TightBindingToolbox, FixedPointToolbox
 using LinearAlgebra, Distributions, Base.Threads
 using Plots
 ##### YOU NEED TO CREATE THE FOLDER Sample/SquareHubbard_Data to save the data
