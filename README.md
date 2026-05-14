@@ -2,7 +2,7 @@
 
 [![Build Status](https://https://github.com/Toronto-Condensed-Matter-Theory/MeanFieldToolkit.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://https://github.com/Toronto-Condensed-Matter-Theory/MeanFieldToolkit.jl/actions/workflows/CI.yml?query=branch%3Amain)
 
-MeanFieldToolkit.jl is a Julia package meant for solving generalized self-consistent mean-field equations on a lattice. It is an updated version of [MeanFieldToolkit.jl](https://github.com/Anjishnubose/TightBindingToolkit.jl)
+MeanFieldToolkit.jl is a Julia package meant for solving generalized self-consistent mean-field equations on a lattice. 
 
 Currently supported :
 * Lattice implementation is done through [TightBindingToolkit.jl](https://https://github.com/Toronto-Condensed-Matter-TheoryTightBindingToolkit.jl). Any custom lattice in $d=1,2,3$ is supported.
