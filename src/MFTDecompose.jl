@@ -1,5 +1,5 @@
 module MFTDecompose
-    export InterQuarticToHopping, InterQuarticToPairing, IntraQuarticToHopping, IntraQuarticToPairing
+    export InterQuarticToHopping, InterQuarticToPairing, IntraQuarticToHopping, IntraQuarticToPairing, InterBondQuarticToHopping, InterBondQuarticToPairing
     
     using TightBindingToolkit, LinearAlgebra, Tullio
 
@@ -86,8 +86,50 @@ The expectation values as a dictionary of matrices containing the expectation va
     end
 
 
+@doc """
+```julia
+InterBondQuarticToHopping(Uij::Array{ComplexF64, 4}, Chis::Dict{String, Matrix{ComplexF64}}) --> Dict{String, Matrix{ComplexF64}}
+```
+Function to decompose an inter-site quartic interaction whose two bilinears both hop across the bond,
+Σ U[a, b, c, d] (f†_{ia} f_{jb})(f†_{ic} f_{jd}) + h.c., into MFT hopping channels. This is the form of pair hopping
+between two orbitals held as different sites: J f†_{i↑} f†_{i↓} f_{j↓} f_{j↑} = J (f†_{i↑} f_{j↑})(f†_{i↓} f_{j↓}).
+Both Hartree and Fock terms live on the bond, so only "ij" is returned; it is the on-site formula with the bond correlation.
+
+"""
+    function InterBondQuarticToHopping(Uij::Array{ComplexF64, 4}, Chis::Dict{String, Matrix{ComplexF64}}) :: Dict{String, Matrix{ComplexF64}}
+
+        Chi_ij  =   Chis["ij"]
+
+        @tullio t_ij[ a , b]    :=   Chi_ij[c, d] * (Uij[a, b, c, d] + Uij[c, d, a, b] - Uij[c, b, a, d] - Uij[a, d, c, b])
+
+        return Dict("ij" => t_ij)
+    end
+
+
+@doc """
+```julia
+InterBondQuarticToPairing(Uij::Array{ComplexF64, 4}, Deltas::Dict{String, Matrix{ComplexF64}}) --> Dict{String, Matrix{ComplexF64}}
+```
+Function to decompose the interaction of [`InterBondQuarticToHopping`](@ref), Σ U[a, b, c, d] (f†_{ia} f_{jb})(f†_{ic} f_{jd}) + h.c.,
+into MFT pairing channels. It moves a pair from site j to site i, so it couples the on-site pair amplitudes of the two sites:
+the pairing on i comes from the pair amplitude on j, and the pairing on j (from the Hermitian conjugate) from that on i.
+
+"""
+    function InterBondQuarticToPairing(Uij::Array{ComplexF64, 4}, Deltas::Dict{String, Matrix{ComplexF64}}) :: Dict{String, Matrix{ComplexF64}}
+
+        Delta_ii    =   Deltas["ii"]
+        Delta_jj    =   Deltas["jj"]
+
+        @tullio p_ii[ a , c]    :=   conj(Delta_jj[b, d]) * Uij[a, b, c, d]
+        @tullio p_jj[ d , b]    :=   conj(Delta_ii[c, a]) * conj(Uij[a, b, c, d])
+
+        return Dict("ii" => p_ii, "jj" => p_jj)
+    end
+
+
     ##### The built-in decompositions, and the one to use instead on the other kind of bond
-    const IntraCounterpart  =   Dict{Function, Function}(InterQuarticToHopping => IntraQuarticToHopping, InterQuarticToPairing => IntraQuarticToPairing)
+    const IntraCounterpart  =   Dict{Function, Function}(InterQuarticToHopping => IntraQuarticToHopping, InterQuarticToPairing => IntraQuarticToPairing,
+                                                         InterBondQuarticToHopping => IntraQuarticToHopping, InterBondQuarticToPairing => IntraQuarticToPairing)
     const InterCounterpart  =   Dict{Function, Function}(IntraQuarticToHopping => InterQuarticToHopping, IntraQuarticToPairing => InterQuarticToPairing)
 
 @doc """

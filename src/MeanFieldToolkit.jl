@@ -2,7 +2,7 @@ module MeanFieldToolkit
 
     include("MFTDecompose.jl")
     using .MFTDecompose
-    export InterQuarticToHopping, InterQuarticToPairing, IntraQuarticToHopping, IntraQuarticToPairing
+    export InterQuarticToHopping, InterQuarticToPairing, IntraQuarticToHopping, IntraQuarticToPairing, InterBondQuarticToHopping, InterBondQuarticToPairing
 
     include("MFTBonds.jl")
     using .MFTBonds
